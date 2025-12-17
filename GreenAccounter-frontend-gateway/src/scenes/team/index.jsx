@@ -188,7 +188,13 @@ const Team = () => {
   return (
     <Box m="20px">
       <Typography variant="h1" gutterBottom>
-        <strong>Clouds</strong>
+        <strong>Clouds </strong>  
+          <Typography
+            component="span"
+            variant="h5"
+            sx={{ opacity: 0.7 }}>
+          Used dummy data for testing purposes.
+          </Typography>
       </Typography>
       <Typography variant="subtitle1" fontSize='20px' gutterBottom>
         Managing the Clouds

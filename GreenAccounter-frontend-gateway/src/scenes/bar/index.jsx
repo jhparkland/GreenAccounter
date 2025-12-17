@@ -5,7 +5,17 @@ import BarChart from "../../components/BarChart";
 const Bar = () => {
   return (
     <Box m="20px">
-      <Header title="Carbon Emission" subtitle="Daily CO2e Levels for US, UK, and KR" />
+        <Header
+          title="Carbon Emission"
+          subtitle={
+            <>
+              Daily CO2e Levels for US, UK, and KR{" "}
+              <span style={{ fontSize: "0.85em", opacity: 0.7 }}>
+                (used dummy data)
+              </span>
+            </>
+          }
+        />
       <Box height="75vh">
         <BarChart />
       </Box>
