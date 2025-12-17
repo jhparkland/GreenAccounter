@@ -124,15 +124,3 @@ class FireBase:
         file_contents = blob.download_as_string()
         file_contents = json.loads(file_contents.decode('utf-8'))
         return file_contents
-    
-        
-if __name__ == "__main__":
-    model = "VGGNet"
-    fb = FireBase(model, "Zz")
-    print(fb.get_parser())
-    # di = {'epoch': '100', 'lr': '0.001', 'batch': '8', 'vgg_model': 'VGG16', 'cuda': '0', 'step_size': '30', 'gamma': '0.1', 'resumption': '0', 'ssh_server': '0', 'threshold': '250'}
-    # print(fb.get_parser())
-    # fb.upload_parser(di)
-    # fb.download_parser()
-    # fb.upload_current_resource(1,2,3,4,5,6,7,8,9,0,0)
-
