@@ -11,6 +11,8 @@ from eletricmaps import electric
 import json
 sys.path.append("./")
 from DB_Module import FireBase
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -25,9 +27,7 @@ known_gpu_exec = "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,n
 known_memory_exec = "free | awk '/^Mem:/ {print  $3 / 1024 \",\"  $2 / 1024 }'"
 total_epoch = 0
 
-with open(f"{os.getcwd()}/electricmaps_api.txt", 'r') as f:
-    token =  f.readline()
-electrics = electric(token=token)
+electrics = electric(token=os.getenv("ELECTRICITYMAPS_API_KEY"))
 
 
 def tt():
