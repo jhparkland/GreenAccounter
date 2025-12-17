@@ -28,7 +28,7 @@ const CloudUsageChart = ({ region }) => {
       labels: ['09:00', '', '11:00', '', '13:00', '', '15:00', '', '17:00', '', '19:00', '', '21:00', '', '23:00'],
       datasets: [
         {
-          label: 'CO2e (metric tons) / Used dummy data for testing purposes.',
+          label: 'CO2e (metric tons) / Demo environment (mock data).',
           data: [0.822, 0.735, 1.27, 0.762, 0.742, 0.809, 0.774, 0.753, 0.804, 0.792, 0.757, 0.749, 1.01, 1.10, 1.21],
           borderColor: tokens('dark').redAccent[500],
           backgroundColor: tokens('dark').redAccent[100],
@@ -46,7 +46,7 @@ const CloudUsageChart = ({ region }) => {
       labels: ['09:00', '', '11:00', '', '13:00', '', '15:00', '', '17:00', '', '19:00', '', '21:00', '', '23:00'],
       datasets: [
         {
-          label: 'CO2e (metric tons) / Used dummy data for testing purposes.',
+          label: 'CO2e (metric tons) / Demo environment (mock data).',
           data: [2.253, 2.209, 1.531, 2.323, 2.256, 2.216, 2.096, 2.029, 2.202, 2.163, 2.043, 2.017, 1.978, 1.922, 2.401],
           borderColor: tokens('dark').blueAccent[500],
           backgroundColor: tokens('dark').blueAccent[100],
@@ -64,7 +64,7 @@ const CloudUsageChart = ({ region }) => {
       labels: ['09:00', '', '11:00', '', '13:00', '', '15:00', '', '17:00', '', '19:00', '', '21:00', '', '23:00'],
       datasets: [
         {
-          label: 'CO2e (metric tons) / Used dummy data for testing purposes.',
+          label: 'CO2e (metric tons) / Demo environment (mock data).',
           data: [1.244, 1.128, 1.254, 1.17, 1.145, 1.23, 1.185, 1.16, 1.225, 1.21, 1.165, 1.155, 1.14, 1.12, 1.3],
           borderColor: tokens('dark').greenAccent[500],
           backgroundColor: tokens('dark').greenAccent[100],

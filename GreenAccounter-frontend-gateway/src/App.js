@@ -15,6 +15,7 @@ import Geography from './scenes/geography';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { ColorModeContext, useMode } from './theme';
 import Calendar from './scenes/calendar/calendar';
+import Footer from "./components/Footer";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -31,7 +32,9 @@ function App() {
         <CssBaseline />
         <div className="app">
           {isLoggedIn && <Sidebar isSidebar={isSidebar} />}
-          <main className="content">
+          <main className="content"
+          style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+>
             {isLoggedIn && <Topbar setIsSidebar={setIsSidebar} />}
             <Routes>
               {/* <Route path="/form" element={<Form onLogin={handleLogin} />} /> */}
@@ -58,6 +61,7 @@ function App() {
                 element={isLoggedIn ? <Geography /> : <Navigate to="/form" />}
               />
             </Routes>
+            <Footer />
           </main>
         </div>
       </ThemeProvider>

@@ -11,7 +11,7 @@ const Bar = () => {
             <>
               Daily CO2e Levels for US, UK, and KR{" "}
               <span style={{ fontSize: "0.85em", opacity: 0.7 }}>
-                (used dummy data)
+                (This environment operates on mock data for demonstration purposes.)
               </span>
             </>
           }

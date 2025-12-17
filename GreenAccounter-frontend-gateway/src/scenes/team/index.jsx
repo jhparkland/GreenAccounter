@@ -193,7 +193,7 @@ const Team = () => {
             component="span"
             variant="h5"
             sx={{ opacity: 0.7 }}>
-          Used dummy data for testing purposes.
+          This environment operates on mock data for demonstration purposes.
           </Typography>
       </Typography>
       <Typography variant="subtitle1" fontSize='20px' gutterBottom>
