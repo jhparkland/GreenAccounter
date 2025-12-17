@@ -5,6 +5,25 @@ This document describes how to set up and deploy the GreenAccounter project.
 
 ---
 
+## Project Structure
+The repository is organized as follows:
+
+```
+GreenAccounter/
+├── GreenAccounter-backend-connection/
+├── GreenAccounter-backend-monitor-carbon/
+├── GreenAccounter-backend-monitor-server/
+├── GreenAccounter-backend-orchestrator/
+├── GreenAccounter-frontend-gateway/
+│
+├── config.py
+├── electricitymaps.txt
+├── ssh_data.csv
+├── make_file.bash
+└── firebase-adminsdk-fbsvc.json
+```
+---
+
 ## Setup Instructions
 
 Follow the steps below in order.
@@ -36,6 +55,10 @@ Configure the `ssh_data` file with the appropriate credentials for your deployme
 - Username
 - SSH key or authentication details
 
+[Example: `ssh_data.csv`]<br>
+|cloud_ip_addr|user_name|Password|Port|country|country_full|rsa_key_path|
+|-----------------|----------|--------|----|------|---|---|
+|x.x.x.x|cctv|1234|10002|KR|Korea|/rsa_keys/id_rsa|
 
 This configuration is required for Kubernetes deployment.
 
@@ -73,5 +96,4 @@ Deployment steps:
 2. Push the Docker image to your cloud provider
 3. Deploy one Docker instance per region
 
-Each re
-gion operates independently and processes region-specific electricity data.
+Each region operates independently and processes region-specific electricity data.
