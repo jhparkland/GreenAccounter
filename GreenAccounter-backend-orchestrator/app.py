@@ -8,6 +8,7 @@ import os
 import pandas as pd
 import asyncio
 from eletricmaps import electric
+from utils import *
 sys.path.append("./")
 from DB_Module import FireBase
 from dotenv import load_dotenv
@@ -72,22 +73,31 @@ def get_resource5():
     region = contents['region']
     region_full = contents['region_full']
     
-    """ 
-    migration 후 fb에 false로 업데이트,  
-    """
     dest = None
-    if is_migration and not migration_progress: # 마이그레이션이 진행중인지 체크하며 중복이 아닌지 쳌쳌 
-        li = [["IT-CSO", uk_ci], ["US", us_ci], ["KR", kr_ci]] 
-        li.sort(key = lambda x:x[1])
-        if li[0][0] == 'US': # migration , server 0 
+    if is_migration and not migration_progress:
+        thresholds = get_thresholds()
+        candidates = [
+            ["US", us_ci, thresholds[0]],
+            ["IT-CSO", uk_ci, thresholds[1]],
+            ["KR", kr_ci, thresholds[2]]
+        ]
+        for candidate in candidates:
+            gap = candidate[2] - candidate[1]
+            candidate.append(gap)
+        candidates.sort(key = lambda x:x[3], reverse=True)
+        best_region = candidates[0][0]
+        best_ci = candidates[0][1]
+        best_gap = candidates[0][3]
+        print(f"Best region: {best_region}, CI: {best_ci}, Gap: {best_gap}")
+        if best_region == 'US': # migration , server 0 
             dest = "US"
-            migration_start(li[0][0], fb, ssh_us, 0, 'United States of America')
-        elif li[0][0] == 'IT-CSO':  # server 1
+            migration_start(best_region, fb, ssh_us, 0, 'United States of America')
+        elif best_region == 'IT-CSO':  # server 1
             dest = "IT-CSO"
-            migration_start(li[0][0], fb, ssh_uk, 1, 'Italy')
-        elif li[0][0] == 'KR':# server 2 
+            migration_start(best_region, fb, ssh_uk, 1, 'Italy')
+        elif best_region == 'KR':# server 2 
             dest = "KR"
-            migration_start(li[0][0], fb, ssh_kr, 2, 'South Korea')
+            migration_start(best_region, fb, ssh_kr, 2, 'South Korea')
     
         
     return jsonify({
