@@ -61,11 +61,11 @@ GreenAccounter is an all-in-one developer toolset for energy and carbon footprin
 
 This project aims to facilitate energy-efficient and environmentally conscious system management. The core features include:
 
-- 🧩 **🌐 Globe:** Multi-region electricity data collection and analysis for comprehensive environmental insights.
-- 🚀 **🛠️ Gear:** Automated deployment pipelines using Docker and Kubernetes for reliable, scalable infrastructure.
-- 🔑 **🔒 Lock:** Secure remote server management via SSH, ensuring trusted operations across cloud environments.
-- 📊 **📈 Chart:** Real-time visualization of resource utilization and carbon emissions to support proactive decision-making.
-- ⚡ **Performance:** Utilities for monitoring and optimizing system performance and responsiveness.
+- **🌐 Globe:** Multi-region electricity data collection and analysis for comprehensive environmental insights.
+- **🛠️ Gear:** Automated deployment pipelines using Docker and Kubernetes for reliable, scalable infrastructure.
+- **🔒 Lock:** Secure remote server management via SSH, ensuring trusted operations across cloud environments.
+- **📈 Chart:** Real-time visualization of resource utilization and carbon emissions to support proactive decision-making.
+- **Performance:** Utilities for monitoring and optimizing system performance and responsiveness.
 
 ---
 
