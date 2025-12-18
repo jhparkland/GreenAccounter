@@ -90,75 +90,16 @@ This project aims to facilitate energy-efficient and environmentally conscious s
 ```sh
 └── GreenAccounter/
     ├── GreenAccounter-backend-connection
-    │   ├── DB_Module.py
-    │   ├── LICENSE
-    │   ├── README.md
-    │   ├── __init__.py
-    │   ├── app.py
-    │   ├── back.yaml
-    │   ├── dockerfile
-    │   ├── eletricmaps.py
-    │   ├── requirements.txt
-    │   ├── rsa_keys
-    │   ├── ssh_connect.py
-    │   └── utils.py
     ├── GreenAccounter-backend-monitor-carbon
-    │   ├── DB_Module.py
-    │   ├── README.md
-    │   ├── __init__.py
-    │   ├── app.py
-    │   ├── back.yaml
-    │   ├── countries.geojson
-    │   ├── dockerfile
-    │   ├── eletricmaps.py
-    │   ├── geo_data.json
-    │   ├── requirements.txt
-    │   ├── rsa_keys
-    │   ├── ssh_connect.py
-    │   ├── utils.py
-    │   └── zones.json
     ├── GreenAccounter-backend-monitor-server
-    │   ├── DB_Module.py
-    │   ├── LICENSE
-    │   ├── README.md
-    │   ├── __init__.py
-    │   ├── app.py
-    │   ├── back.yaml
-    │   ├── dockerfile
-    │   ├── eletricmaps.py
-    │   ├── requirements.txt
-    │   ├── rsa_keys
-    │   ├── ssh_connect.py
-    │   └── utils.py
     ├── GreenAccounter-backend-orchestrator
-    │   ├── DB_Module.py
-    │   ├── LICENSE
-    │   ├── README.md
-    │   ├── __init__.py
-    │   ├── app.py
-    │   ├── back.yaml
-    │   ├── dockerfile
-    │   ├── eletricmaps.py
-    │   ├── requirements.txt
-    │   ├── rsa_keys
-    │   ├── ssh_connect.py
-    │   └── utils.py
     ├── GreenAccounter-frontend-gateway
-    │   ├── LICENSE
-    │   ├── README.md
-    │   ├── build
-    │   ├── dockerfile
-    │   ├── front.yaml
-    │   ├── nginx.conf
-    │   ├── package-lock.json
-    │   ├── package.json
-    │   ├── public
-    │   └── src
     ├── LICENSE
     ├── README.md
     ├── config.py
     ├── firebase-adminsdk-fbsvc.json
     ├── make_file.bash
+    ├── .env
     └── ssh_data.csv
 ```
 
@@ -940,11 +881,11 @@ This project aims to facilitate energy-efficient and environmentally conscious s
 
 ### Prerequisites
 
-This project requires the following dependencies:
+Before deploying GreenAccounter, ensure you have the following installed and configured:
 
-- **Programming Language:** JavaScript
-- **Package Manager:** Pip, Npm
-
+- **Kubernetes Cluster**: v1.20 or higher
+- **Docker**: For building and managing container images
+  
 ### Installation
 
 Build GreenAccounter from the source and install dependencies:
@@ -961,48 +902,188 @@ Build GreenAccounter from the source and install dependencies:
     ❯ cd GreenAccounter
     ```
 
-3. **Install the dependencies:**
+### Configuration
 
-**Using [pip](https://pypi.org/project/pip/):**
+#### 1. Firebase Configuration
 
-```sh
-❯ pip install -r GreenAccounter-backend-connection/requirements.txt, GreenAccounter-backend-orchestrator/requirements.txt, GreenAccounter-backend-monitor-server/requirements.txt, GreenAccounter-backend-monitor-carbon/requirements.txt
-```
-**Using [npm](https://www.npmjs.com/):**
+Edit a file named `config.py` in the project root directory and add the following information:
 
-```sh
-❯ npm install
-```
+- Firebase AUTH key(JSON file name)
+- Firebase Storage Bucket
 
-### Usage
+Download the Firebase Admin SDK JSON key file from the Firebase Console and place it in the project root directory as `firebase-adminsdk-fbsvc.json`.
 
-Run the project with:
 
-**Using [pip](https://pypi.org/project/pip/):**
+### 2. ElectricityMaps API Key
 
-```sh
-python {entrypoint}
-```
-**Using [npm](https://www.npmjs.com/):**
+Create a file named `.env` and add your [ElectricityMaps API key](https://app.electricitymaps.com/dashboard):
 
-```sh
-npm start
+```python
+ELECTRICITYMAPS_API_KEY=<YOUR_ELECTRICMAPS_API_KEY>
 ```
 
-### Testing
+#### 3. SSH Configuration
 
-Greenaccounter uses the {__test_framework__} test framework. Run the test suite with:
+Configure SSH credentials in `ssh_data.csv` for remote server access:
 
-**Using [pip](https://pypi.org/project/pip/):**
+[Example: `ssh_data.csv`]<br>
+|cloud_ip_addr|user_name|Password|Port|country|country_full|region_threshold|rsa_key_path|
+|-----------------|----------|--------|----|------|------------|-----------------|------------|
+|x.x.x.x|cctv|1234|10002|KR|Korea|150|/rsa_keys/id_rsa|
 
-```sh
-pytest
+Place your RSA private keys in the respective `rsa_keys/` directories within each backend module.
+
+
+### Deployment
+
+#### Automated Kubernetes Deployment
+
+After completing all configuration steps, deploy the entire project to Kubernetes:
+
+```bash
+bash make_file.bash
 ```
-**Using [npm](https://www.npmjs.com/):**
 
-```sh
-npm test
+This script will:
+- Copy configuration files to all backend services
+- Build Docker images for frontend and backend components
+- Push images to your container registry
+- Deploy all services to your Kubernetes cluster
+- Configure NGINX Ingress for routing
+
+#### Manual Deployment (Optional)
+
+If you prefer manual deployment, follow these steps:
+
+1. **Build Docker images:**
+   ```bash
+   # Frontend
+   cd GreenAccounter-frontend-gateway
+   docker build -t greenaccounter-frontend:latest .
+   
+   # Backend services
+   cd ../GreenAccounter-backend-connection
+   docker build -t greenaccounter-connection:latest .
+   
+   cd ../GreenAccounter-backend-orchestrator
+   docker build -t greenaccounter-orchestrator:latest .
+   
+   cd ../GreenAccounter-backend-monitor-server
+   docker build -t greenaccounter-monitor-server:latest .
+   
+   cd ../GreenAccounter-backend-monitor-carbon
+   docker build -t greenaccounter-monitor-carbon:latest .
+   ```
+
+2. **Deploy to Kubernetes:**
+   ```bash
+   # Deploy backend services
+   kubectl apply -f GreenAccounter-backend-connection/back.yaml
+   kubectl apply -f GreenAccounter-backend-orchestrator/back.yaml
+   kubectl apply -f GreenAccounter-backend-monitor-server/back.yaml
+   kubectl apply -f GreenAccounter-backend-monitor-carbon/back.yaml
+   
+   # Deploy frontend and ingress
+   kubectl apply -f GreenAccounter-frontend-gateway/front.yaml
+   ```
+
+3. **Verify deployment:**
+   ```bash
+   kubectl get pods
+   kubectl get services
+   kubectl get ingress
+   ```
+
+
+### Deep Learning Model Setup
+
+#### Configuration
+
+Before deploying the deep learning model, configure the following files in the `VGGNET/` directory:
+
+##### 1. Firebase Configuration
+
+Edit a file named `config.py` in the project root directory and add the following information:
+
+- Firebase AUTH key(JSON file name)
+- Firebase Storage Bucket
+
+Download the Firebase Admin SDK JSON key file from the Firebase Console and place it in the project root directory as `firebase-adminsdk-fbsvc.json`.
+
+
+### 2. ElectricityMaps API Key
+
+Create a file named `.env` and add your [ElectricityMaps API key](https://app.electricitymaps.com/dashboard):
+
+```python
+ELECTRICITYMAPS_API_KEY=<YOUR_ELECTRICMAPS_API_KEY>
 ```
+
+#### 3. Carbon Configuration
+
+Configure carbon thresholds in the `carbon_config.csv` file for carbon-aware learning:
+
+[Example: `carbon_config.csv`]<br>
+|country|country_full|region_threshold|
+------|------------|-----------------|
+|KR|Korea|150|
+
+*Note: In this demo version, regions are pre-configured for testing purposes.*
+
+
+#### Docker Deployment for Deep Learning Models
+
+The VGGNet deep learning model is containerized and deployed in cloud environments.
+
+*Note: This demo version uses VGGNet as a sample model for testing purposes.*
+
+**Deployment Process:**
+
+1. **Build the Docker image locally:**
+   ```bash
+   cd VGGNET
+   docker build -t vggnet .
+   ```
+
+2. **Deploy to each region:**
+   ```bash
+   # Run containers image to KR server
+   $ user@kr-server "docker run --gpus all --name KR -it vggnet"
+   
+   # Run containers image to US server
+   $ user@us-server "docker run --gpus all --name US -it vggnet"
+   
+   # Run containers image to IT-CSO server
+   $ user@it-server " docker run --gpus all --name IT-CSO -it vggnet"
+   ```
+
+   **Important Notes:**
+   - Container names must match the region codes (KR, US, IT-CSO)
+   - `--gpus all` flag enables GPU access for model training
+   - Ensure NVIDIA Docker runtime is installed on each server
+   - Images are deployed locally without using a container registry
+
+
+Each regional instance operates independently, processing region-specific electricity data and carbon intensity metrics.
+
+
+### Accessing the Application
+
+Once deployed, access the GreenAccounter dashboard:
+
+```
+http://localhost/
+```
+
+### Troubleshooting
+
+**Common Issues:**
+
+- **Pods not starting:** Check logs with `kubectl logs <pod-name>`
+- **Connection errors:** Verify SSH credentials in `ssh_data.csv`
+- **API errors:** Ensure ElectricityMaps API key is valid
+- **Firebase errors:** Verify Firebase configuration and credentials
+
 
 <div align="left"><a href="#top">⬆ Return</a></div>
 
