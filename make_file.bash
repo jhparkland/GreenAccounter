@@ -5,12 +5,10 @@ FIREBASE_KEY=$(python3 -c "from config import Config; print(Config.FIREBASE_AUTH
 
 SOURCE_CONFIG="config.py"
 SSH_DATA_CONFIG="ssh_data.csv"
-ELECTRICMAPS="electricmaps_api.txt"
+ELECTRICMAPS=".env"
 FOLDERS=("GreenAccounter-backend-connection" "GreenAccounter-backend-monitor-carbon" "GreenAccounter-backend-monitor-server" "GreenAccounter-backend-orchestrator")
 
 for folder in "${FOLDERS[@]}"; do
-    rm -f "$folder/config.py" "$folder/$FIREBASE_KEY"
-    
     cp "$SOURCE_CONFIG" "$folder/config.py"
     cp "$FIREBASE_KEY" "$folder/$FIREBASE_KEY"
     cp "$SSH_DATA_CONFIG" "$folder/$SSH_DATA_CONFIG"
