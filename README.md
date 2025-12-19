@@ -994,6 +994,7 @@ If you prefer manual deployment, follow these steps:
    kubectl get ingress
    ```
 
+---
 
 ### Deep Learning Model Setup
 
@@ -1019,7 +1020,7 @@ Create a file named `.env` and add your [ElectricityMaps API key](https://app.el
 ELECTRICITYMAPS_API_KEY=<YOUR_ELECTRICMAPS_API_KEY>
 ```
 
-#### 3. Carbon Configuration
+### 3. Carbon Configuration
 
 Configure carbon thresholds in the `carbon_config.csv` file for carbon-aware learning:
 
@@ -1063,6 +1064,33 @@ The VGGNet deep learning model is containerized and deployed in cloud environmen
    - Ensure NVIDIA Docker runtime is installed on each server
    - Images are deployed locally without using a container registry
 
+
+Each regional instance operates independently, processing region-specific electricity data and carbon intensity metrics.
+
+
+### 4. Starting Training
+
+**Launch deep learning training in the terminal of your desired cloud server.**
+
+For example, to train the VGGNet model, use the following command:
+
+```bash
+$ docker run -it --gpus all vggnet --epoch 100 --lr 0.001 --batch 8 --vgg_model VGG16 --cuda 0 --step_size 30 --gamma 0.1 --resumption 0 --ssh_server 0
+```
+
+**Command Options:**
+
+- `--epoch`: Number of training epochs
+- `--lr`: Learning rate
+- `--batch`: Batch size
+- `--vgg_model`: VGGNet model variant to use
+- `--cuda`: GPU device number
+- `--step_size`: Step size for learning rate decay
+- `--gamma`: Learning rate decay factor
+- `--resumption`: Migration resumption flag (0: new training, 1: resume)
+- `--ssh_server`: Current training SSH server 
+
+Each option can be modified according to your deep learning model requirements.
 
 Each regional instance operates independently, processing region-specific electricity data and carbon intensity metrics.
 
