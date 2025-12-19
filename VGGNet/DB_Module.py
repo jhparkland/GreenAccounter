@@ -15,6 +15,7 @@ class FireBase:
                                                         }, name= name)
         # self.model = model
         self.path = os.getcwd()
+        os.makedirs(f"{self.path}/file", exist_ok=True)
         self.file_path = f"{self.path}/file/model.pt"
         self.dest_path = f"{self.model}/model.pt"
         self.resource_path = f"{self.model}/resource.json"
@@ -117,3 +118,4 @@ class FireBase:
         file_contents = blob.download_as_string()
         file_contents = json.loads(file_contents.decode('utf-8'))
         return file_contents
+
