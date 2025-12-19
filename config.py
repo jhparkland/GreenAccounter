@@ -1,3 +1,3 @@
 class Config:
-    FIREBASE_AUTH_KEY = "PUT YOUR FIREBASE AUTH KEY HERE"
-    FIREBASE_STORAGE_BUCKET = "PUT YOUR FIREBASE STORAGE BUCKET HERE"
+    FIREBASE_AUTH_KEY = "greenaccounter-23357-firebase-adminsdk-fbsvc-8f76334a97.json"
+    FIREBASE_STORAGE_BUCKET = "greenaccounter-23357.firebasestorage.app"
